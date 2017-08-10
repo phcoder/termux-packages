@@ -55,6 +55,15 @@ termux_step_post_extract_package () {
 
 	tar -xf $TERMUX_PKG_CACHEDIR/$CLANG_SRC_TAR -C tools
 	mv tools/cfe-${TERMUX_PKG_VERSION}.src tools/clang
+
+	local LLD_SRC_TAR=lld-${TERMUX_PKG_VERSION}.src.tar.xz
+	termux_download \
+		http://llvm.org/releases/${TERMUX_PKG_VERSION}/$LLD_SRC_TAR \
+		$TERMUX_PKG_CACHEDIR/$LLD_SRC_TAR \
+		63ce10e533276ca353941ce5ab5cc8e8dcd99dbdd9c4fa49f344a212f29d36ed
+
+	tar -xf $TERMUX_PKG_CACHEDIR/$LLD_SRC_TAR -C tools
+	mv tools/lld-${TERMUX_PKG_VERSION}.src tools/lld
 }
 
 termux_step_host_build () {
