@@ -1,11 +1,12 @@
 TERMUX_PKG_HOMEPAGE=http://clang.llvm.org/
 TERMUX_PKG_DESCRIPTION="Modular compiler and toolchain technologies library"
-_PKG_MAJOR_VERSION=4.0
-TERMUX_PKG_VERSION=${_PKG_MAJOR_VERSION}.1
+_PKG_MAJOR_VERSION=5.0
+TERMUX_PKG_VERSION=${_PKG_MAJOR_VERSION}~+rc2
 TERMUX_PKG_REVISION=1
-TERMUX_PKG_SRCURL=http://llvm.org/releases/${TERMUX_PKG_VERSION}/llvm-${TERMUX_PKG_VERSION}.src.tar.xz
-TERMUX_PKG_SHA256=da783db1f82d516791179fe103c71706046561f7972b18f0049242dee6712b51
+TERMUX_PKG_SRCURL=http://http.debian.net/debian/pool/main/l/llvm-toolchain-${_PKG_MAJOR_VERSION}/llvm-toolchain-${_PKG_MAJOR_VERSION}_${TERMUX_PKG_VERSION}.orig.tar.bz2
+TERMUX_PKG_SHA256=59c3903d6c15ca012dad85dd2677c0d68295c1420dea13b84968f70c6e37f15d
 TERMUX_PKG_HOSTBUILD=true
+TERMUX_PKG_FOLDERNAME=llvm-toolchain-${_PKG_MAJOR_VERSION}_${TERMUX_PKG_VERSION}
 TERMUX_PKG_RM_AFTER_INSTALL="
 bin/bugpoint
 bin/clang-check
@@ -47,23 +48,23 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 TERMUX_PKG_FORCE_CMAKE=yes
 
 termux_step_post_extract_package () {
-	local CLANG_SRC_TAR=cfe-${TERMUX_PKG_VERSION}.src.tar.xz
+	local CLANG_SRC_TAR=llvm-toolchain-${_PKG_MAJOR_VERSION}_${TERMUX_PKG_VERSION}.orig-clang.tar.bz2
 	termux_download \
-		http://llvm.org/releases/${TERMUX_PKG_VERSION}/$CLANG_SRC_TAR \
+		http://http.debian.net/debian/pool/main/l/llvm-toolchain-${_PKG_MAJOR_VERSION}/$CLANG_SRC_TAR \
 		$TERMUX_PKG_CACHEDIR/$CLANG_SRC_TAR \
-		61738a735852c23c3bdbe52d035488cdb2083013f384d67c1ba36fabebd8769b
+		55e6aa0e06e2ee1156cb1e72529c4c4bf65f68f0c754559f5c2a5166bf89b8b9
 
 	tar -xf $TERMUX_PKG_CACHEDIR/$CLANG_SRC_TAR -C tools
-	mv tools/cfe-${TERMUX_PKG_VERSION}.src tools/clang
+	mv tools/clang_${TERMUX_PKG_VERSION} tools/clang
 
-	local LLD_SRC_TAR=lld-${TERMUX_PKG_VERSION}.src.tar.xz
+	local LLD_SRC_TAR=llvm-toolchain-${_PKG_MAJOR_VERSION}_${TERMUX_PKG_VERSION}.orig-lld.tar.bz2
 	termux_download \
-		http://llvm.org/releases/${TERMUX_PKG_VERSION}/$LLD_SRC_TAR \
+		http://http.debian.net/debian/pool/main/l/llvm-toolchain-${_PKG_MAJOR_VERSION}/$LLD_SRC_TAR \
 		$TERMUX_PKG_CACHEDIR/$LLD_SRC_TAR \
-		63ce10e533276ca353941ce5ab5cc8e8dcd99dbdd9c4fa49f344a212f29d36ed
+		9de6459ff5eea5642ecd5bbaf1384bf23ae39662dfbd6ce902b6b5a5a6654478
 
 	tar -xf $TERMUX_PKG_CACHEDIR/$LLD_SRC_TAR -C tools
-	mv tools/lld-${TERMUX_PKG_VERSION}.src tools/lld
+	mv tools/lld_${TERMUX_PKG_VERSION} tools/lld
 }
 
 termux_step_host_build () {
